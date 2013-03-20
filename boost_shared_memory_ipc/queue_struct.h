@@ -6,7 +6,7 @@
 #include "boost/interprocess/sync/interprocess_condition.hpp"
 
 struct trace_queue {
-  enum { kMessageSize = 10000 };
+  enum { kMessageSize = 50000 };
 
   trace_queue() : message_in(false) {}
   boost::interprocess::interprocess_mutex mutex;
