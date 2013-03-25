@@ -112,32 +112,37 @@ std::vector<int> FindWordLimits() {
   return word_limits;
 }
 
+void DoSwap(int start, int& middle, int end) {
+  std::string current(g_string_array + start + 1, g_string_array + middle), 
+              next(g_string_array + middle + 1, g_string_array + end); 
+  std::memcpy(g_string_array + start + 1, next.c_str(), next.size());
+  middle = start + next.size() + 1;
+  g_string_array[middle] = '\0';
+  std::memcpy(g_string_array + middle + 1, current.c_str(), current.size());
+}
+
+bool SwapNeeded(int start, int middle, int end) {
+  int count(0), max(std::min(middle - start, end - middle));
+  while (count != max) {
+    if (g_string_array[start] == g_string_array[middle]) {
+      ++count, ++start, ++middle;
+      continue;
+    }
+    
+    if (g_string_array[start] > g_string_array[middle])
+      return true;
+    else
+      return false;
+  }
+  return false;
+}
+
 void SortArray() {
   std::vector<int> word_limits(FindWordLimits());
   while (word_limits.size() != 2) {
     for (int a(0); a != word_limits.size() - 2; ++a) {
-      std::string current(g_string_array + word_limits.at(a) + 1, 
-                          g_string_array + word_limits.at(a + 1)), 
-                  next(g_string_array + word_limits.at(a + 1) + 1, 
-                       g_string_array + word_limits.at(a + 2));
-      int count(0), max(std::min(current.size(), next.size()));
-      bool swap(false);
-      while (count != max) {
-        if (current.at(count) == next.at(count)) {
-          ++count;
-          continue;
-        }
-        
-        if (current.at(count) > next.at(count))
-          swap = true;
-        break;
-      }
-      if (swap) {
-        std::memcpy(g_string_array + word_limits.at(a) + 1, next.c_str(), next.size());
-        word_limits.at(a + 1) = word_limits.at(a) + next.size() + 1;
-        g_string_array[word_limits.at(a + 1)] = '\0';
-        std::memcpy(g_string_array + word_limits.at(a + 1) + 1, current.c_str(), current.size());
-      }
+      if (SwapNeeded(word_limits.at(a) + 1, word_limits.at(a + 1) + 1, word_limits.at(a + 2)))
+        DoSwap(word_limits.at(a), word_limits.at(a + 1), word_limits.at(a + 2));
     }
     word_limits.pop_back();
   }
