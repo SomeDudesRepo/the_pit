@@ -27,7 +27,7 @@ Display::~Display() {
   }
 }
 
-bool Display::connect(const char */*display_name*/) {
+bool Display::connect(const char* /*display_name*/) {
   return true;
 }
 

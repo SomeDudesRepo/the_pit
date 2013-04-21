@@ -47,8 +47,8 @@ RgbNumber CheckForHexNumber(const std::string& s) {
     throw GeneralException(message);
 
   std::string temp(s.substr(pos + 2));
-  for (const auto& c : temp) {
-    if (!std::isxdigit(c, loc))
+  for (size_t c(0); c != temp.size(); ++c) {
+	  if (!std::isxdigit(temp.at(c), loc))
       throw GeneralException(message);
   }
 
@@ -59,9 +59,9 @@ RgbNumber CheckForHexNumber(const std::string& s) {
 
 RgbNumber CheckForDecimalNumber(const std::string& s) {
   std::locale loc;
-  for (const auto& c : s) {
-    if (!std::isdigit(c, loc)) {
-      std::string message(std::string(1, c) + " is not a decimal char.");
+  for (size_t c(0); c != s.size(); ++c) {
+    if (!std::isdigit(s.at(c), loc)) {
+      std::string message(std::string(1, s.at(c)) + " is not a decimal char.");
       throw GeneralException(message);
     }
   }

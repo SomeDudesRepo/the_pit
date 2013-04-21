@@ -1,5 +1,5 @@
 #include <bitset>
-#include <cmath>
+#include <math.h>
 #include <cstdlib>
 #include <iostream>
 #include <locale>
@@ -56,7 +56,7 @@ RgbNumber GenerateColourMix(double tl,
                             int shift) {
   double t(col / (width - 1));
   double s(row / (height - 1));
-  return RgbNumber(std::round(tl * (1-t) * (1-s) +
+  return RgbNumber((tl * (1-t) * (1-s) +
                    tr * t * (1-s) +
                    bl * (1-t) * s +
                    br * t * s)) << shift;
@@ -148,7 +148,7 @@ std::vector<RgbNumber> CalculateLine(int width,
   for (int x(0); x != width; ++x) {
     RgbNumber red(RgbNumber(tl_rgb[2] + (red_delta * x)) << 11),
               green(RgbNumber(tl_rgb[1] + (green_delta * x)) << 5),
-              blue(tl_rgb[0] + (blue_delta * x));
+              blue(RgbNumber(tl_rgb[0] + (blue_delta * x)));
     line.push_back(red + green + blue);
   }
 
